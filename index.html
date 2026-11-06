@@ -82,7 +82,7 @@
     <main class="flex-grow pt-24">
 
         <!-- Hero Section -->
-        <section class="relative min-h-[95vh] flex flex-col items-center justify-center px-6 overflow-hidden">
+        <section class="relative min-h-[95vh] flex flex-col items-center justify-center px-6 py-12 overflow-hidden">
             <div class="absolute inset-0 z-0 opacity-15 pointer-events-none">
                 <img src="media/hero_bg.png" alt="" class="w-full h-full object-cover">
                 <div class="absolute inset-0 bg-gradient-to-t from-[#030505] via-[#030505]/60 to-[#030505]"></div>
@@ -143,11 +143,11 @@
                         Get In Touch
                     </a>
                 </div>
-            </div>
 
-            <!-- Scroll Indicator -->
-            <div class="absolute bottom-5 left-1/2 -translate-x-1/2 flex items-center font-mono text-[11px] text-green-500/50 tracking-widest animate-pulse pointer-events-none select-none">
-                // scroll ↓
+                <!-- Scroll Indicator (in normal flow to prevent overlap) -->
+                <div class="mt-10 flex items-center justify-center font-mono text-[11px] text-green-500/50 tracking-widest animate-pulse pointer-events-none select-none">
+                    // scroll ↓
+                </div>
             </div>
         </section>
 
