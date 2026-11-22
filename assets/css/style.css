@@ -195,6 +195,59 @@ header {
     display: none;
 }
 
+/* Bottom-Right Floating Quote Widget */
+.quote-widget-btn {
+    position: fixed !important;
+    bottom: 1.5rem !important;
+    right: 1.5rem !important;
+    width: 44px;
+    height: 44px;
+    border-radius: 9999px;
+    background: rgba(3, 7, 4, 0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(0, 255, 65, 0.3);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 255, 65, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--green);
+    cursor: pointer;
+    z-index: 1000;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+.quote-widget-btn:hover, .quote-widget-btn:active {
+    transform: scale(1.08);
+    border-color: rgba(0, 255, 65, 0.6);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.7), 0 0 25px rgba(0, 255, 65, 0.35);
+}
+
+.quote-widget-card {
+    position: fixed !important;
+    bottom: 4.75rem !important;
+    right: 1.5rem !important;
+    width: min(320px, calc(100vw - 3rem));
+    background: rgba(3, 8, 4, 0.96);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: none !important;
+    border-radius: 14px;
+    padding: 1rem 1.15rem;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.9);
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+    pointer-events: none;
+    transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.quote-widget-card.open {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: var(--bg-darker); }
@@ -220,7 +273,8 @@ header {
 .reveal-prep {
     opacity: 0;
     transform: translateY(24px);
-    transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+    transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
 }
 .reveal-active {
     opacity: 1 !important;
