@@ -88,7 +88,7 @@
                 <div class="absolute inset-0 bg-gradient-to-t from-[#030505] via-[#030505]/60 to-[#030505]"></div>
             </div>
 
-            <div class="relative z-10 text-center max-w-4xl mx-auto w-full mt-12 reveal-on-scroll">
+            <div class="relative z-10 text-center max-w-4xl mx-auto w-full mt-12">
 
                 <!-- Single line name -->
                 <h1
@@ -153,8 +153,8 @@
 
         <!-- Biography -->
         <section class="py-20 px-6">
-            <div class="max-w-4xl mx-auto reveal-on-scroll">
-                <div class="cyber-card p-8 md:p-12">
+            <div class="max-w-4xl mx-auto">
+                <div class="cyber-card p-8 md:p-12 reveal-on-scroll">
                     <div class="mb-4">
                         <span class="text-xs font-mono text-green-500/60 uppercase tracking-widest block mb-1">// 01. profile</span>
                         <h2 class="text-2xl md:text-3xl font-bold tracking-tight">Biography</h2>
@@ -170,14 +170,14 @@
 
         <!-- What I Do Section -->
         <section class="pb-24 px-6">
-            <div class="max-w-4xl mx-auto reveal-on-scroll">
-                <div class="mb-8 text-center sm:text-left">
+            <div class="max-w-4xl mx-auto">
+                <div class="mb-8 text-center sm:text-left reveal-on-scroll">
                     <span class="text-xs font-mono text-green-500/60 uppercase tracking-widest block mb-1">// 02. focus areas</span>
                     <h2 class="text-2xl md:text-3xl font-bold tracking-tight">What I Do</h2>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                    <div class="cyber-card p-6 flex flex-col justify-between">
+                    <div class="cyber-card p-6 flex flex-col justify-between reveal-on-scroll">
                         <div>
                             <div class="text-xs font-mono text-green-400 font-bold uppercase tracking-wider mb-2">[01]</div>
                             <h3 class="text-lg font-bold text-slate-100 mb-2">SOC Analyst (L1)</h3>
@@ -190,7 +190,7 @@
                         </div>
                     </div>
 
-                    <div class="cyber-card p-6 flex flex-col justify-between">
+                    <div class="cyber-card p-6 flex flex-col justify-between reveal-on-scroll" style="transition-delay:0.1s">
                         <div>
                             <div class="text-xs font-mono text-green-400 font-bold uppercase tracking-wider mb-2">[02]</div>
                             <h3 class="text-lg font-bold text-slate-100 mb-2">OSINT</h3>
@@ -203,7 +203,7 @@
                         </div>
                     </div>
 
-                    <div class="cyber-card p-6 flex flex-col justify-between">
+                    <div class="cyber-card p-6 flex flex-col justify-between reveal-on-scroll" style="transition-delay:0.2s">
                         <div>
                             <div class="text-xs font-mono text-green-400 font-bold uppercase tracking-wider mb-2">[03]</div>
                             <div class="flex items-center gap-2 mb-2">
@@ -234,9 +234,11 @@
             const txt = document.getElementById('terminal-textarea');
             if (txt) txt.focus({ preventScroll: true });
         }
-        // Focus on load without scrolling
+        // Focus on load only on desktop (prevent mobile keyboard/viewport jump)
         window.addEventListener('load', () => {
-            setTimeout(() => focusTerminal(), 100);
+            if (window.innerWidth >= 768) {
+                setTimeout(() => focusTerminal(), 100);
+            }
         });
     </script>
 </body>
