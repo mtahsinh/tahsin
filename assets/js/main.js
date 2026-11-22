@@ -22,11 +22,18 @@ Promise.all([
     const footerEl = document.getElementById('site-footer');
     if (footerEl) footerEl.innerHTML = footerHTML;
 
+    // Move quote widget to document.body so it floats over viewport
+    const quoteWidget = document.getElementById('quote-widget');
+    if (quoteWidget && quoteWidget.parentElement !== document.body) {
+        document.body.appendChild(quoteWidget);
+    }
+
     setupNav();
     highlightActiveLink();
     startHeaderLogoAnimation();
     startRealisticTerminalSimulation();
     setupInteractiveTerminal();
+    setupQuoteWidget();
 }).catch(err => {
     console.warn('Includes load failed — access via http://, not file://', err);
 });
@@ -952,21 +959,64 @@ function runFullscreenCMatrix(isBackground = false) {
 }
 
 // ─── Scroll reveal ───────────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-    const obs = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('reveal-active');
-                observer.unobserve(entry.target);
+function initScrollReveal() {
+    const revealEls = document.querySelectorAll('.reveal-on-scroll');
+    if (!revealEls.length) return;
+
+    function revealElement(el) {
+        el.classList.add('reveal-active');
+        el.classList.remove('reveal-prep');
+    }
+
+    function isElementInViewport(el) {
+        const rect = el.getBoundingClientRect();
+        const vh = window.innerHeight || document.documentElement.clientHeight;
+        return rect.top <= vh - 20;
+    }
+
+    function onScrollCheck() {
+        revealEls.forEach(el => {
+            if (!el.classList.contains('reveal-active') && isElementInViewport(el)) {
+                revealElement(el);
             }
         });
-    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    }
 
-    document.querySelectorAll('.reveal-on-scroll').forEach(el => {
-        el.classList.add('reveal-prep');
-        obs.observe(el);
-    });
-});
+    if ('IntersectionObserver' in window) {
+        const obs = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    revealElement(entry.target);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.05, rootMargin: '0px 0px 50px 0px' });
+
+        revealEls.forEach(el => {
+            if (isElementInViewport(el)) {
+                revealElement(el);
+            } else {
+                el.classList.add('reveal-prep');
+                obs.observe(el);
+            }
+        });
+    } else {
+        revealEls.forEach(el => {
+            if (!isElementInViewport(el)) {
+                el.classList.add('reveal-prep');
+            }
+        });
+    }
+
+    window.addEventListener('scroll', onScrollCheck, { passive: true });
+    window.addEventListener('resize', onScrollCheck, { passive: true });
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initScrollReveal);
+} else {
+    initScrollReveal();
+}
 
 function runFullscreenSl(isBackground = false) {
     const overlay = document.createElement('div');
@@ -1077,5 +1127,45 @@ function runFullscreenSl(isBackground = false) {
                 if (document.body.contains(overlay)) document.body.removeChild(overlay);
             }
         }, 16);
+    });
+}
+
+// ─── Floating Quote / Message Widget ─────────────────────────────────────────
+function setupQuoteWidget() {
+    const widget = document.getElementById('quote-widget');
+    if (widget && widget.parentElement !== document.body) {
+        document.body.appendChild(widget);
+    }
+
+    const btn = document.getElementById('quote-widget-btn');
+    const card = document.getElementById('quote-widget-card');
+    const closeBtn = document.getElementById('quote-widget-close');
+
+    if (!btn || !card) return;
+
+    function toggleCard(e) {
+        if (e) e.stopPropagation();
+        card.classList.toggle('open');
+    }
+
+    btn.addEventListener('click', toggleCard);
+    if (closeBtn) {
+        closeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            card.classList.remove('open');
+        });
+    }
+
+    // Dismiss on click/touch outside
+    document.addEventListener('click', (e) => {
+        if (card.classList.contains('open') && !card.contains(e.target) && !btn.contains(e.target)) {
+            card.classList.remove('open');
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && card.classList.contains('open')) {
+            card.classList.remove('open');
+        }
     });
 }
