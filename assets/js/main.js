@@ -1010,12 +1010,16 @@ function initScrollReveal() {
 
     window.addEventListener('scroll', onScrollCheck, { passive: true });
     window.addEventListener('resize', onScrollCheck, { passive: true });
+
+    // Immediately reveal anything already in viewport on load
+    onScrollCheck();
 }
 
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initScrollReveal);
+// Run after full page load (Tailwind CDN must finish styling before measuring layout)
+if (document.readyState === 'complete') {
+    setTimeout(initScrollReveal, 50);
 } else {
-    initScrollReveal();
+    window.addEventListener('load', () => setTimeout(initScrollReveal, 50));
 }
 
 function runFullscreenSl(isBackground = false) {
